@@ -9,11 +9,14 @@ document.getElementsByClassName("gif")[document.getElementsByClassName("gif").le
 const searchInput = document.getElementById("search-input");
 const api_key = "y75ufo1GAk6BPtV5TPggZMw5b0HNeFtQ";
 const gifs = document.getElementById("gifs");
-let page = 0;
+let page = 0, isLoading = false;
 document.getElementById("search-button").addEventListener("click", handleClickSearchButton);
 
 window.addEventListener("scroll", () => {
-    checkForNewDiv();
+    if (!isLoading) {
+        checkForNewDiv();
+    }
+
 })
 
 function checkForNewDiv() {
@@ -23,7 +26,7 @@ function checkForNewDiv() {
 
     if (pageOffset > lastDivOffset - 500) {
         page++;
-        findGifs(searchInput.value);        
+        findGifs(searchInput.value);
     }
 };
 
@@ -35,14 +38,16 @@ function handleClickSearchButton(event) {
 }
 
 function findGifs(request) {
+    isLoading = true;
     fetch(`http://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${request}&limit=${page == 0 ? 20 : 5}&offset=${page == 0 ? 0 : 20 + (page - 1) * 5}`)
         .then(respone => respone.json()).then(response => {
             console.log("page" + page + "length" + response.data.length);
+            
             response.data.forEach(element => {
                 gifs.appendChild(createGif(element));
-            });
+            });            
         }
-        );
+        ).then(() => isLoading = false);
 }
 
 function removeGifsIfExist() {
