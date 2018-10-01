@@ -7,21 +7,68 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
 }
 
 .search-section {
+    width: 100%;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
     margin-top: 20px;
 }
 
-.gifs {
+.search-section .container {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.search-section input[type="text"] {
+    width: 100%;
+    outline: none;
+}
+
+#dropdown {
+    border: 2px solid white;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;    
+    flex-wrap: wrap;
+    position: absolute;
+    z-index: 9999;
+    background-color: white;
+}
+
+#dropdown .gif {
+    border: none;
+}
+
+.pick-section {
+    margin-top: 20px;
+    width: 40%;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pick-section label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.content {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-    
 }
 
 .gif {
@@ -31,8 +78,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    margin: 5px; 
-    height: 100%;    
+    margin: 5px;
+    height: 100%;
 }
 
 .gif .header {
