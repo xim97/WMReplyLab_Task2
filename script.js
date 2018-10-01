@@ -48,14 +48,13 @@ class Utils {
         } else {
             Creator.createListOfEntities(storage.slice(5 * offset, 5 * (offset + 1)), "content");           
         }
-
     }
 }
 
 
 class Eraser {
     static removeDataIfExist(place) {
-        let listOfEntities = document.querySelectorAll(`#${place} .gif`);
+        let listOfEntities = document.querySelectorAll(`#${place} .entity`);
         listOfEntities.forEach(element => {
             switch (place) {
                 case "content": {
@@ -72,7 +71,7 @@ class Eraser {
 
     static deleteItemFromStorage(item) {
         storage = JSON.parse(localStorage.getItem("favourites"));
-        storage = storage.filter(element => element.id != item.getAttribute("gifid"));
+        storage = storage.filter(element => element.id != item.getAttribute("entityid"));
         localStorage.setItem("favourites", JSON.stringify(storage));
     }
 
@@ -102,7 +101,7 @@ class Adder {
     }
 
     static addItemToStorage(item) {
-        storage.unshift(resultOfRequest.find(element => element.id == item.getAttribute("gifid")));        
+        storage.unshift(resultOfRequest.find(element => element.id == item.getAttribute("entityid")));        
         localStorage.setItem("favourites", JSON.stringify(storage));
     }
 
@@ -134,7 +133,6 @@ class Handlers {
             Eraser.removeDataIfExist("dropdown");
         }
     }
-
 
     static handleInputChange(event) {
         const request = event.target.value;
@@ -236,12 +234,12 @@ class Creator {
     }
 
     static createEntity(entity, imageProperty) {
-        let gif = document.createElement("div");
-        gif.className = "gif";
-        gif.setAttribute("gifid", entity.id);
-        gif.appendChild(Creator.createHeaderForEntity(entity.title, entity.id));
-        gif.appendChild(Creator.createImageForEntity(entity, imageProperty));
-        return gif;
+        let DOMObject = document.createElement("div");
+        DOMObject.className = "entity";
+        DOMObject.setAttribute("entityid", entity.id);
+        DOMObject.appendChild(Creator.createHeaderForEntity(entity.title, entity.id));
+        DOMObject.appendChild(Creator.createImageForEntity(entity, imageProperty));
+        return DOMObject;
     }
 }
 
