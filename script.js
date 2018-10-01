@@ -34,7 +34,7 @@ class Utils {
         return currentNode.parentNode;
     }
 
-    static getData(request, place) {
+    static getData(request, place, handleInputChange = false) {
         if (section != "favourite") {
             isLoading = true;
             fetch(`http://api.giphy.com/v1/${section}/search?api_key=${api_key}&q=${request}&limit=${place == "content" ? offset == 0 ? 10 : 5 : 5}&offset=${offset == 0 ? 0 : 20 + (offset - 1) * 5}`)
@@ -42,11 +42,14 @@ class Utils {
                     Creator.createListOfEntities(response.data, place);
                     resultOfRequest = [...response.data];
                 }
-                ).then(() => isLoading = false).catch( error => {
-                    console.error(error);                    
+                ).then(() => isLoading = false).catch(error => {
+                    console.error(error);
                 });
         } else {
-            Creator.createListOfEntities(storage.slice(5 * offset, 5 * (offset + 1)), "content");           
+            if (!handleInputChange) {
+                Creator.createListOfEntities(storage.slice(5 * offset, 5 * (offset + 1)), "content");
+            }
+
         }
     }
 }
@@ -101,7 +104,7 @@ class Adder {
     }
 
     static addItemToStorage(item) {
-        storage.unshift(resultOfRequest.find(element => element.id == item.getAttribute("entityid")));        
+        storage.unshift(resultOfRequest.find(element => element.id == item.getAttribute("entityid")));
         localStorage.setItem("favourites", JSON.stringify(storage));
     }
 
@@ -137,7 +140,7 @@ class Handlers {
     static handleInputChange(event) {
         const request = event.target.value;
         Eraser.removeDataIfExist("dropdown");
-        Utils.getData(request, "dropdown");
+        Utils.getData(request, "dropdown", true);
     }
 
     static handleClickFavoriteButton(event) {
@@ -145,7 +148,7 @@ class Handlers {
             targetClassList = event.target.classList;
         if (Utils.getParentNode(event.target) == dropDown) {
             searchInput.focus();
-        }        
+        }
         if (targetClassList.contains("far")) {
             targetClassList.remove("far");
             targetClassList.add("fas");
